@@ -30,6 +30,7 @@ class MarkdownAutoPreview extends StatefulWidget {
     this.expands = false,
     this.decoration = const InputDecoration(isDense: true),
     this.hintText,
+    this.initialValue,
   });
 
   /// Markdown syntax to reset the field to
@@ -200,7 +201,8 @@ class _MarkdownAutoPreviewState extends State<MarkdownAutoPreview> {
 
   @override
   void initState() {
-    _internalController = widget.controller ?? TextEditingController();
+    _internalController = widget.controller ??
+        TextEditingController(text: widget.initialValue ?? '');
 
     _toolbar = Toolbar(
       controller: _internalController,
