@@ -43,6 +43,9 @@ class MarkdownAutoPreview extends StatefulWidget {
   /// Hint text to show when the field is empty
   final String? hintText;
 
+  /// Initial value of the text field
+  final String? initialValue;
+
   /// For enable toolbar options
   ///
   /// if false, toolbar widget will not display
