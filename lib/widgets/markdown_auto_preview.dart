@@ -17,12 +17,14 @@ class MarkdownAutoPreview extends StatefulWidget {
     this.onTap,
     this.cursorColor,
     this.toolbarBackground,
+    this.borderColor = Colors.transparent,
     this.expandableBackground,
     this.maxLines,
     this.minLines,
     this.markdownSyntax,
     this.emojiConvert = false,
     this.enableToolBar = true,
+    this.writeOnly = false,
     this.showEmojiSelection = true,
     this.autoCloseAfterSelectEmoji = true,
     this.textCapitalization = TextCapitalization.sentences,
@@ -50,6 +52,9 @@ class MarkdownAutoPreview extends StatefulWidget {
   ///
   /// if false, toolbar widget will not display
   final bool enableToolBar;
+
+  /// Forces the editor to be in write mode only, ignoring focus changes
+  final bool writeOnly;
 
   /// Enable Emoji options
   ///
@@ -140,6 +145,9 @@ class MarkdownAutoPreview extends StatefulWidget {
   ///
   final Color? toolbarBackground;
 
+  /// The border color of the toolbar
+  final Color borderColor;
+
   /// The toolbar widget to display when the toolbar is enabled
   ///
   /// When no toolbarBackground widget is provided, the default toolbar color will be displayed
@@ -201,6 +209,7 @@ class _MarkdownAutoPreviewState extends State<MarkdownAutoPreview> {
   late Toolbar _toolbar;
 
   bool _focused = false;
+  bool _previewed = false;
 
   @override
   void initState() {
@@ -219,6 +228,8 @@ class _MarkdownAutoPreviewState extends State<MarkdownAutoPreview> {
         }
       },
     );
+
+    _focused = widget.writeOnly;
 
     super.initState();
   }
@@ -254,6 +265,7 @@ class _MarkdownAutoPreviewState extends State<MarkdownAutoPreview> {
       },
 
       onFocusChange: (focus) {
+        if (widget.writeOnly) return;
         setState(() {
           _focused = focus;
         });
@@ -294,8 +306,6 @@ class _MarkdownAutoPreviewState extends State<MarkdownAutoPreview> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _editor(),
-
               // show toolbar
               if (!widget.readOnly)
                 MarkdownToolbar(
@@ -304,14 +314,24 @@ class _MarkdownAutoPreviewState extends State<MarkdownAutoPreview> {
                   controller: _internalController,
                   autoCloseAfterSelectEmoji: widget.autoCloseAfterSelectEmoji,
                   toolbar: _toolbar,
+                  onActionCompleted: () {
+                    widget.onChanged?.call(_internalController.text);
+                  },
+                  previewed: _previewed,
                   onPreviewChanged: () {
-                    // Remove focus first
-                    _internalFocus.unfocus();
+                    if (widget.writeOnly) {
+                      setState(() {
+                        _previewed = !_previewed;
+                      });
+                    } else {
+                      // Remove focus first
+                      _internalFocus.unfocus();
 
-                    // Then remove widget from widget tree
-                    setState(() {
-                      _focused = !_focused;
-                    });
+                      // Then remove widget from widget tree
+                      setState(() {
+                        _focused = !_focused;
+                      });
+                    }
                   },
                   unfocus: () {
                     _internalFocus.unfocus();
@@ -320,7 +340,24 @@ class _MarkdownAutoPreviewState extends State<MarkdownAutoPreview> {
                   emojiConvert: widget.emojiConvert,
                   toolbarBackground: widget.toolbarBackground,
                   expandableBackground: widget.expandableBackground,
-                )
+                  borderColor: widget.borderColor,
+                ),
+                Container(
+                  margin: _previewed
+                  ? EdgeInsets.only(top: 10)
+                  : EdgeInsets.only(top: -50),
+                  child: _previewed
+                  ? Align(
+                      alignment: Alignment.centerLeft,
+                      child: MarkdownBody(
+                        key: const ValueKey<String>("zmarkdown-parse-body"),
+                        data: _internalController.text == ""
+                            ? widget.hintText ?? "_Markdown text_"
+                            : _internalController.text,
+                      ),
+                    )
+                  : _editor(),
+                ),
             ],
           );
   }
