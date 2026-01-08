@@ -102,6 +102,17 @@ class MarkdownToolbar extends StatelessWidget {
                   onActionCompleted?.call();
                 },
               ),
+            // blockquote
+            if (!previewed)
+            ToolbarItem(
+              key: const ValueKey<String>("toolbar_blockquote_action"),
+              icon: FontAwesomeIcons.quoteLeft,
+              tooltip: 'Blockquote',
+              onPressedButton: () {
+                toolbar.action("> ", "");
+                onActionCompleted?.call();
+              },
+            ),
             // link
             if (!previewed)
               ToolbarItem(
