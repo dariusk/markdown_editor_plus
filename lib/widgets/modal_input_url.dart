@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:markdown_editor_plus/src/toolbar.dart';
 
-class ModalInputUrl extends StatelessWidget {
+class ModalInputUrl extends StatefulWidget {
   const ModalInputUrl({
     super.key,
     required this.toolbar,
@@ -14,6 +14,82 @@ class ModalInputUrl extends StatelessWidget {
   final String leftText;
   final TextSelection selection;
   final VoidCallback? onActionCompleted;
+
+  @override
+  State<ModalInputUrl> createState() => _ModalInputUrlState();
+}
+
+class _ModalInputUrlState extends State<ModalInputUrl> {
+  final TextEditingController _textController = TextEditingController();
+  final TextEditingController _urlController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Initialize the text field with the currently selected text
+    // from the editor.
+    final String fullText = widget.toolbar.controller.text;
+    _textController.text = widget.selection.textInside(fullText);
+  }
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    _urlController.dispose();
+    super.dispose();
+  }
+
+  void _submit(BuildContext context) {
+    String text = _textController.text.trim();
+    String url = _urlController.text.trim();
+
+    if (text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text(
+            "Please provide text",
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.red.withOpacity(0.8),
+          duration: const Duration(milliseconds: 700),
+        ),
+      );
+      return;
+    }
+
+    if (url.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text(
+            "Please input a url",
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.red.withOpacity(0.8),
+          duration: const Duration(milliseconds: 700),
+        ),
+      );
+      return;
+    }
+
+    // Add scheme if missing
+    if (!url.contains(RegExp(r'https?:\/\/(www\.)?([^\s]+)'))) {
+      url = "http://$url";
+    }
+
+    // Build: [text](url)
+    final String result = "[$text]($url)";
+
+    widget.toolbar.action(
+      "${widget.leftText}$result",
+      "",
+      textSelection: widget.selection,
+      replace: true,
+    );
+
+    Navigator.pop(context);
+    widget.onActionCompleted?.call();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +106,7 @@ class ModalInputUrl extends StatelessWidget {
           const Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(
-              "Please provide a URL here.",
+              "Text",
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -38,8 +114,36 @@ class ModalInputUrl extends StatelessWidget {
             ),
           ),
           TextField(
+            controller: _textController,
             autocorrect: false,
             autofocus: true,
+            cursorRadius: const Radius.circular(16),
+            decoration: const InputDecoration(
+              hintText: "Text for the link",
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(16.0)),
+              ),
+            ),
+            style: const TextStyle(fontSize: 16),
+            enableInteractiveSelection: true,
+            // Optionally move focus to URL on submit
+            onSubmitted: (_) {
+              FocusScope.of(context).nextFocus();
+            },
+          ),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              "Link",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          TextField(
+            controller: _urlController,
+            autocorrect: false,
             cursorRadius: const Radius.circular(16),
             decoration: const InputDecoration(
               hintText: "Input your url.",
@@ -50,36 +154,7 @@ class ModalInputUrl extends StatelessWidget {
             ),
             style: const TextStyle(fontSize: 16),
             enableInteractiveSelection: true,
-            onSubmitted: (String value) {
-              Navigator.pop(context);
-
-              /// check if the user entered an empty input
-              if (value.isEmpty) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: const Text(
-                      "Please input url",
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    backgroundColor: Colors.red.withOpacity(0.8),
-                    duration: const Duration(milliseconds: 700),
-                  ),
-                );
-              } else {
-                if (!value.contains(RegExp(r'https?:\/\/(www.)?([^\s]+)'))) {
-                  value = "http://$value";
-                }
-                toolbar.action(
-                  "$leftText$value)",
-                  "",
-                  textSelection: selection,
-                );
-              }
-
-              onActionCompleted?.call();
-            },
+            onSubmitted: (_) => _submit(context),
           ),
         ],
       ),

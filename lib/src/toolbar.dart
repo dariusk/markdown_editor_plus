@@ -36,7 +36,7 @@ class Toolbar {
   }
 
   // toolbar action
-  void action(String left, String right, {TextSelection? textSelection}) {
+  void action(String left, String right, {TextSelection? textSelection, bool replace = false}) {
     // Keep this as it is
     // Dont remove or place in the end
     bringEditorToFocus?.call();
@@ -53,7 +53,7 @@ class Toolbar {
     TextSelection selection = textSelection ?? controller.selection;
     selection = getSelection(selection);
 
-    final String middle = selection.textInside(currentTextValue);
+    final String middle = replace ? '' : selection.textInside(currentTextValue);
     String selectionText = '$left$middle$right';
     int baseOffset = left.length + middle.length;
     int extentOffset = selection.extentOffset + left.length + right.length;

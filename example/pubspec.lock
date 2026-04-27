@@ -78,14 +78,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.2"
-  flutter_markdown:
+  flutter_markdown_plus:
     dependency: transitive
     description:
-      name: flutter_markdown
-      sha256: "04c4722cc36ec5af38acc38ece70d22d3c2123c61305d555750a091517bbe504"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.6.23"
+      path: "."
+      ref: frankly
+      resolved-ref: "2a15272e478ec37fdfdb99a942c0cb252e7b18aa"
+      url: "https://github.com/dariusk/flutter_markdown_plus.git"
+    source: git
+    version: "1.0.1+1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -95,10 +96,10 @@ packages:
     dependency: transitive
     description:
       name: font_awesome_flutter
-      sha256: "5fb789145cae1f4c3245c58b3f8fb287d055c26323879eab57a7bf0cfd1e45f3"
+      sha256: f50ce90dbe26d977415b9540400d6778bef00894aced6358ae578abd92b14b10
       url: "https://pub.dev"
     source: hosted
-    version: "10.5.0"
+    version: "10.9.0"
   leak_tracker:
     dependency: transitive
     description:
@@ -135,17 +136,17 @@ packages:
     dependency: transitive
     description:
       name: markdown
-      sha256: acf35edccc0463a9d7384e437c015a3535772e09714cf60e07eeef3a15870dcd
+      sha256: "935e23e1ff3bc02d390bad4d4be001208ee92cc217cb5b5a6c19bc14aaa318c1"
       url: "https://pub.dev"
     source: hosted
-    version: "7.1.1"
+    version: "7.3.0"
   markdown_editor_plus:
     dependency: "direct main"
     description:
       path: ".."
       relative: true
     source: path
-    version: "0.2.13"
+    version: "0.2.15"
   matcher:
     dependency: transitive
     description:
@@ -248,5 +249,5 @@ packages:
     source: hosted
     version: "14.2.1"
 sdks:
-  dart: ">=3.3.0 <4.0.0"
-  flutter: ">=3.19.0"
+  dart: ">=3.4.0 <4.0.0"
+  flutter: ">=3.22.0"

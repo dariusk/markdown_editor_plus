@@ -44,7 +44,6 @@ class MarkdownToolbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: Duration(milliseconds: 200),
-      color: toolbarBackground ?? Colors.grey[200],
       width: double.maxFinite,
       height: 45,
       decoration: BoxDecoration(
@@ -54,6 +53,7 @@ class MarkdownToolbar extends StatelessWidget {
             width: 0.5,
           ),
         ),
+        color: toolbarBackground ?? Colors.grey[200],
       ),
       padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
       child: SingleChildScrollView(
@@ -102,17 +102,17 @@ class MarkdownToolbar extends StatelessWidget {
                   onActionCompleted?.call();
                 },
               ),
-            // blockquote
-            if (!previewed)
-            ToolbarItem(
-              key: const ValueKey<String>("toolbar_blockquote_action"),
-              icon: FontAwesomeIcons.quoteLeft,
-              tooltip: 'Blockquote',
-              onPressedButton: () {
-                toolbar.action("> ", "");
-                onActionCompleted?.call();
-              },
-            ),
+            // // blockquote
+            // if (!previewed)
+            // ToolbarItem(
+            //   key: const ValueKey<String>("toolbar_blockquote_action"),
+            //   icon: FontAwesomeIcons.quoteLeft,
+            //   tooltip: 'Blockquote',
+            //   onPressedButton: () {
+            //     toolbar.action("> ", "");
+            //     onActionCompleted?.call();
+            //   },
+            // ),
             // link
             if (!previewed)
               ToolbarItem(
@@ -120,12 +120,8 @@ class MarkdownToolbar extends StatelessWidget {
                 icon: FontAwesomeIcons.link,
                 tooltip: 'Add hyperlink',
                 onPressedButton: () async {
-                  if (toolbar.hasSelection) {
-                    toolbar.action("[enter link description here](", ")");
-                  } else {
-                    await _showModalInputUrl(context,
-                        "[enter link description here](", controller.selection);
-                  }
+                  await _showModalInputUrl(context,
+                      "", controller.selection);
 
                   onActionCompleted?.call();
                 },
