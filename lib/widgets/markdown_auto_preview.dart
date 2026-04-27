@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
+import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
 import '../src/constants.dart';
 import '../src/emoji_input_formatter.dart';
@@ -289,6 +290,7 @@ class _MarkdownAutoPreviewState extends State<MarkdownAutoPreview> {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: MarkdownBody(
+                  onTapLink: (String text, String? href, String title) => url_launcher.launch(href ?? ''),
                   key: const ValueKey<String>("zmarkdown-parse-body"),
                   data: _internalController.text == ""
                       ? widget.hintText ?? "_Markdown text_"
@@ -350,6 +352,7 @@ class _MarkdownAutoPreviewState extends State<MarkdownAutoPreview> {
                   ? Align(
                       alignment: Alignment.centerLeft,
                       child: MarkdownBody(
+                        onTapLink: (String text, String? href, String title) => url_launcher.launch(href ?? ''),
                         key: const ValueKey<String>("zmarkdown-parse-body"),
                         data: _internalController.text == ""
                             ? widget.hintText ?? "_Markdown text_"

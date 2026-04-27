@@ -129,50 +129,13 @@ class MarkdownToolbar extends StatelessWidget {
             // heading
             if (!previewed)
               ToolbarItem(
-                key: const ValueKey<String>("toolbar_heading_action"),
+                key: const ValueKey<String>("h3"),
                 icon: FontAwesomeIcons.heading,
-                isExpandable: true,
                 tooltip: 'Insert Heading',
-                expandableBackground: expandableBackground,
-                items: [
-                  ToolbarItem(
-                    key: const ValueKey<String>("h1"),
-                    icon: "H1",
-                    tooltip: 'Insert Heading 1',
-                    onPressedButton: () {
-                      toolbar.action("# ", "");
-                      onActionCompleted?.call();
-                    },
-                  ),
-                  ToolbarItem(
-                    key: const ValueKey<String>("h2"),
-                    icon: "H2",
-                    tooltip: 'Insert Heading 2',
-                    onPressedButton: () {
-                      toolbar.action("## ", "");
-                      onActionCompleted?.call();
-                    },
-                  ),
-                  ToolbarItem(
-                    key: const ValueKey<String>("h3"),
-                    icon: "H3",
-                    tooltip: 'Insert Heading 3',
-                    onPressedButton: () {
-                      toolbar.action("### ", "");
-                      onActionCompleted?.call();
-                    },
-                  ),
-                  ToolbarItem(
-                    key: const ValueKey<String>("h4"),
-                    icon: "H4",
-                    tooltip: 'Insert Heading 4',
-                    onPressedButton: () {
-                      toolbar.action("#### ", "");
-                      onActionCompleted?.call();
-                    },
-                  ),
-                  // Heading 5 onwards has same font
-                ],
+                onPressedButton: () {
+                  toolbar.action("### ", "");
+                  onActionCompleted?.call();
+                },
               ),
             if (previewed)
               Text(
