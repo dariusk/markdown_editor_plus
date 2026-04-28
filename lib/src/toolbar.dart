@@ -53,7 +53,14 @@ class Toolbar {
     TextSelection selection = textSelection ?? controller.selection;
     selection = getSelection(selection);
 
-    final String middle = replace ? '' : selection.textInside(currentTextValue);
+    String middle = replace ? '' : selection.textInside(currentTextValue);
+
+    // If no text is selected, adjust the selection to the start of the current line
+    if (selection.isCollapsed) {
+      final int lineStart = currentTextValue.lastIndexOf('\n', selection.baseOffset - 1) + 1;
+      selection = selection.copyWith(baseOffset: lineStart, extentOffset: lineStart);
+      middle = selection.textInside(currentTextValue);
+    }
     String selectionText = '$left$middle$right';
     int baseOffset = left.length + middle.length;
     int extentOffset = selection.extentOffset + left.length + right.length;
