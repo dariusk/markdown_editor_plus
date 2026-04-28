@@ -61,7 +61,7 @@ class Toolbar {
     // check if middle text have char \n
     if (indent) {
       selectionText = middle.split("\n").map((line) => "  $line").join("\n");
-      baseOffset = selectionText.length;
+      baseOffset = selection.baseOffset + 2;
       extentOffset = selection.extentOffset + (2 * middle.split("\n").length);
     } else if (middle.split("\n").length > 1) {
       ToolbarResult result =
