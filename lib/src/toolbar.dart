@@ -59,7 +59,11 @@ class Toolbar {
     int extentOffset = selection.extentOffset + left.length + right.length;
 
     // check if middle text have char \n
-    if (middle.split("\n").length > 1) {
+    if (indent) {
+      selectionText = middle.split("\n").map((line) => "  $line").join("\n");
+      baseOffset = selectionText.length;
+      extentOffset = selection.extentOffset + (2 * middle.split("\n").length);
+    } else if (middle.split("\n").length > 1) {
       ToolbarResult result =
           _multiLineFormating(left, middle, right, selection.extentOffset);
       selectionText = result.text;
