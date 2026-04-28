@@ -36,7 +36,7 @@ class Toolbar {
   }
 
   // toolbar action
-  void action(String left, String right, {TextSelection? textSelection, bool replace = false}) {
+  void action(String left, String right, {TextSelection? textSelection, bool replace = false, bool indent = false}) {
     // Keep this as it is
     // Dont remove or place in the end
     bringEditorToFocus?.call();

@@ -102,6 +102,31 @@ class MarkdownToolbar extends StatelessWidget {
                   onActionCompleted?.call();
                 },
               ),
+            // unorder list
+            if (!previewed)
+              ToolbarItem(
+                key: const ValueKey<String>("toolbar_order_list_action"),
+                icon: FontAwesomeIcons.listOl,
+                tooltip: 'Ordered list',
+                onPressedButton: () {
+                  toolbar.action("1. ", "");
+                  onActionCompleted?.call();
+                },
+              ),
+            // indent item
+            if (!previewed)
+              ToolbarItem(
+                key: const ValueKey<String>("toolbar_indent_list_action"),
+                icon: FontAwesomeIcons.indent,
+                tooltip: 'Indent list',
+                onPressedButton: () {
+                  if (controller.selection.textInside(controller.value.text).split("\n").length == 1) {
+                    toolbar.selectSingleLine?.call();
+                  }
+                  toolbar.action("  ", "", indent: true);
+                  onActionCompleted?.call();
+                },
+              ),
             // // blockquote
             // if (!previewed)
             // ToolbarItem(
