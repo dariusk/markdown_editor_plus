@@ -156,6 +156,21 @@ class _ModalInputUrlState extends State<ModalInputUrl> {
             enableInteractiveSelection: true,
             onSubmitted: (_) => _submit(context),
           ),
+          // TextButtons to submit and cancel the form
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              OutlinedButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text("Cancel"),
+              ),
+              const SizedBox(width: 8),
+              OutlinedButton(
+                onPressed: () => _submit(context),
+                child: const Text("Insert"),
+              ),
+            ],
+          ),
         ],
       ),
     );
