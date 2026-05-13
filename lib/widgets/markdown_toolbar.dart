@@ -113,20 +113,6 @@ class MarkdownToolbar extends StatelessWidget {
                   onActionCompleted?.call();
                 },
               ),
-            // indent item
-            if (!previewed)
-              ToolbarItem(
-                key: const ValueKey<String>("toolbar_indent_list_action"),
-                icon: FontAwesomeIcons.indent,
-                tooltip: 'Indent list',
-                onPressedButton: () {
-                  if (controller.selection.textInside(controller.value.text).split("\n").length == 1) {
-                    toolbar.selectSingleLine?.call();
-                  }
-                  toolbar.action("  ", "", indent: true);
-                  onActionCompleted?.call();
-                },
-              ),
             // // blockquote
             // if (!previewed)
             // ToolbarItem(
