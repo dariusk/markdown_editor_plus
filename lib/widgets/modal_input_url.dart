@@ -99,6 +99,9 @@ class _ModalInputUrlState extends State<ModalInputUrl> {
       ),
       padding: const EdgeInsets.all(30),
       width: double.maxFinite,
+      constraints: const BoxConstraints(
+        maxWidth: 500, // Maximum width in logical pixels
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
