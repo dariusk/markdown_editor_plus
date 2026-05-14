@@ -36,7 +36,7 @@ class Toolbar {
   }
 
   // toolbar action
-  void action(String left, String right, {TextSelection? textSelection, bool replace = false, bool indent = false}) {
+  void action(String left, String right, {TextSelection? textSelection, bool replace = false, bool indent = false, bool noSelection = false}) {
     // Keep this as it is
     // Dont remove or place in the end
     bringEditorToFocus?.call();
@@ -95,7 +95,7 @@ class Toolbar {
 
     controller.value = controller.value.copyWith(
       text: newTextValue,
-      selection: selection.baseOffset == selection.extentOffset
+      selection: (selection.baseOffset == selection.extentOffset) || noSelection
           ? TextSelection.collapsed(
               offset: selection.baseOffset + baseOffset,
             )

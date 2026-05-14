@@ -85,6 +85,7 @@ class _ModalInputUrlState extends State<ModalInputUrl> {
       "",
       textSelection: widget.selection,
       replace: true,
+      noSelection: true,
     );
 
     Navigator.pop(context);
